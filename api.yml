@@ -1,0 +1,153 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Microservice for Favorite
+  description: Python + Postgres
+  license:
+    name: Software Architecture 2018-I
+host: 172.17.0.1:3302
+basePath: /
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /favorite:
+    post:
+      summary: Creates a new favourite
+      operationId: favourite
+      parameters:
+        - name: favourite
+          in: body
+          required: true
+          description: Favourite Object
+          schema:
+            $ref: '#/definitions/FavouriteInput'
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+    get:
+      summary: Returns all favorite
+      operationId: getAllFavorite
+      responses:
+        '200':
+          description: Ok
+          schema:
+            $ref: '#/definitions/ListFavorite'
+        '406':
+          description: Not Acceptable (Invalid Params)
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+
+  /favourite/{id}:
+    get:
+      summary: Returns a favourite with the given id
+      operationId: getFavouriteById
+      parameters:
+        - name: id
+          in: path
+          description: The id of favourite to be returned
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Ok
+          schema:
+            $ref: '#/definitions/favourite'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '406':
+            description: Not Acceptable (Invalid Params)
+            schema:
+              $ref: '#/definitions/ErrorModel'
+        '500':
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+
+    put:
+      summary: Updates a favourite with the given id
+      operationId: updateFavourite
+      parameters:
+        - name: id
+          in: path
+          description: The id of the favourite to be updated
+          required: true
+          type: integer
+        - name: favourite
+          in: body
+          required: true
+          description: Favourite Object
+          schema:
+            $ref: '#/definitions/FavouriteInput'
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '406':
+            description: Not Acceptable (Invalid Params)
+            schema:
+              $ref: '#/definitions/ErrorModel'
+        '500':
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+
+    delete:
+      summary: Deletes a favourite with the given id
+      operationId: deleteFavourite
+      parameters:
+        - name: id
+          in: path
+          description: The id of the favourite to be deleted
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Ok
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '406':
+            description: Not Acceptable (Invalid Params)
+            schema:
+              $ref: '#/definitions/ErrorModel'
+        '500':
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+
+definitions:
+
+  # Favorite
+  Favourite:
+    type: object
+    properties:
+      id:
+        type: integer
+      user_id:
+        type: integer
+      place_id:
+        type: integer
+      comment:
+        type: string
