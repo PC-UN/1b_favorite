@@ -1,11 +1,11 @@
 version: '3'
 
 services:
-  1b_favorite_db:
+  favorite_db:
     image: postgres
     ports:
       - "4002:5432"
-  1b_favorite_ms:
+  favorite_ms:
     build: .
     command: python3 manage.py runserver 0.0.0.0:3302
     volumes:
@@ -13,4 +13,4 @@ services:
     ports:
       - "3302:3302"
     depends_on:
-      - 1b_favorite_db
+      - favorite_db
