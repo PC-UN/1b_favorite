@@ -25,9 +25,20 @@ class ListFavorite(generics.ListCreateAPIView):
     def perform_update(self, serializer):
         instance = serializer.save()
 
+class FavoriteView(generics.ListAPIView):
+
+    serializer_class = FavouriteSerializer
+    def get_queryset(self):
+        user_id= self.kwargs['user_id']
+        return Favourite.objects.filter(user_id=user_id)
+
+
+
 class DetailFavourite(generics.RetrieveUpdateDestroyAPIView):
     queryset = Favourite.objects.all()
     serializer_class = FavouriteSerializer
 
     def patch(self, request, *args, **kwargs):
         return self.partial_update(request, *args, **kwargs)
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
