@@ -3,11 +3,11 @@ services:
   favorite_db:
     image: postgres
     ports:
-      - "4002:5432"
+      - "4304:5432"
   favorite_ms:
     build: .
     command: bash -c "python3 manage.py makemigrations && python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:3302"
     ports:
-      - "3302:3302"
+      - "3304:3302"
     depends_on:
       - favorite_db
